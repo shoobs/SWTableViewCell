@@ -17,8 +17,6 @@ static NSString * const kTableViewCellContentView = @"UITableViewCellContentView
 @interface SWTableViewCell () <UIScrollViewDelegate>
 {
     SWCellState _cellState; // The state of the cell within the scroll view, can be left, right or middle
-    CGFloat additionalRightPadding;
-    
     dispatch_once_t onceToken;
 }
 
@@ -95,7 +93,7 @@ static NSString * const kTableViewCellContentView = @"UITableViewCellContentView
     if([self.containingTableView.dataSource respondsToSelector:@selector(sectionIndexTitlesForTableView:)])
     {
         NSArray *indices = [self.containingTableView.dataSource sectionIndexTitlesForTableView:self.containingTableView];
-        additionalRightPadding = indices == nil ? 0 : kSectionIndexWidth;
+        self.additionalRightPadding = indices == nil ? 0 : kSectionIndexWidth;
     }
     
     // Set up scroll view that will host our cell content
@@ -406,7 +404,7 @@ static NSString * const kTableViewCellContentView = @"UITableViewCellContentView
 
 - (CGFloat)rightUtilityButtonsWidth
 {
-    return [self.scrollViewButtonViewRight utilityButtonsWidth] + additionalRightPadding;
+    return [self.scrollViewButtonViewRight utilityButtonsWidth] + self.additionalRightPadding;
 }
 
 - (CGFloat)utilityButtonsPadding
